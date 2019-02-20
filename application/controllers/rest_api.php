@@ -9,15 +9,23 @@ class Rest_api extends REST_Controller {
     private $noContentStatus = REST_Controller::HTTP_NO_CONTENT;
     
     public function login_post() {
-        $data['username'] = $this->post('username');
-        $data['password'] = $this->post('password');
-        $data['status'] = ''; // true or fasle
-        $data['message'] = 'message';
+        // for login codes
+    }
+    public function events_get() {
+        $data['teacher_id'] = $this->get('teacher_id');
+        $row = $this->db->query("select fname, lname from public.register WHERE teacher_id = ?", $data['teacher_id'])->row();
+
+        $data['teacher_name'] = $row->lname.", ".$row->lname;
+        
+        $data['records'] = $this->db->query("select * from public.events where teacher_id = ?",$data['teacher_id'])->result(); 
         $this->response($data, $this->badRequestStatus);
     }
-    public function sample_get() {
-        $data['status'] = $this->get('sample1');
-        $data['message'] = $this->get('sample2');
-        $this->response($data, $this->badRequestStatus);
+
+    public function edit_events_put() { // or post
+        // edit the events
+    }
+
+    public function logout_post() {
+        // logout
     }
 }
